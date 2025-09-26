@@ -1,0 +1,283 @@
+# import math kinda useful
+
+# single line if command - Xstatement if conditionX else Ystatement
+
+# string.find(char) (first occurrence of a character)
+# string.rfind(char) (last occurrence of a character) (-1 means not found)
+# string.isdigit()/string.isalpha()
+# (string is only digits or only alphabetic characters (NO SPACES)
+# string.count(char) counts how many characters are in a string
+# string.replace(char1, char2) replaces any char1 with a char2 in a string
+#print(help(str)) SHOWS ALL METHODS RELATING TO STRINGS
+
+#strings are treated as an array of chars
+# syntax - string[start : end : step] (start is inclusive, end is exclusive)
+# negative numbers go from end to start
+# step means how many characters you count by (step 2 would be 1, 3, 5, 7, 9, etc.)
+# step -1 would reverse the string
+
+# format specifier = {value:flags}
+# TO BE USED IN F STRINGS
+#decimal precision flag - .3f (3 decimals behind 0 floating point number)
+#space flag - >10 (would allocate 10 spaces to print whatever value it is, right aligned)
+# center align would be ^10
+# sign flag - ( ) (space key) makes a space for sign of number
+# separator flag - , - adds a comma between the thousand place and million and so on
+# flags can be added next to each other to use multiple (ex. - {value:, .3f>10}
+
+#for loop syntax - for i in range(startVal, endVal, step)
+#print(val, end = "") makes it so everything prints on the same line (end by default is "/n")
+
+#LISTING SYNTAX
+#print(help(list)) works to find stuff (list is the variable name)
+# (val in list) returns a boolean
+
+
+#list = [val1, val2, val3] - ordered, changeable, with dupes
+
+
+#set = {val1, val2, val3} - unordered, immutable but can add and remove, NO DUPES
+# sets cannot be subscripted because they are unordered (set[0])
+
+#tuple = (val1, val2, val3) - ordered, unchangeable, can have dupes, is usually faster
+#count and index only 2 funcs (index finds where, count finds how many
+
+#DICTIONARY
+# syntax - dictionaryVar = {name1:val1, name2:val2}
+# dictionaryVar.get(name1) returns val1
+# dictionaryVar.update(name1:valNew) changes value of a pair
+# dictionaryVar.pop(name1) gets rid of the pair entirely
+# dictionaryVar.keys() returns a list with all names in it
+# dictionaryVar.values() returns a list with all values in it
+# dictionaryVar.items() returns a list of tuples with the name 1st and value second
+
+#random stuff (using import random)
+#random.randint(startInt, endInt) to get a val from start to end
+#random.shuffle(listVar) shuffles a list around
+
+#functions n shit
+# def func(var1, var2 = 0, var3 = 1):
+# this will make it so you dont have to define them in the call statement
+# but if you do, it will override the numbers above
+# func(var2 = 10, var1 = 2, 1) would set to the correct variables because they are keyworded
+
+# def func(*args) takes as many arguments as needed and stores in tuple
+# change the *args to **kwargs stores it in a dictionary object
+# if you pass both (func(*args, **kwargs)) it has both dictionary of kw and tuple of args
+# can use "name" in kwargs to find specific kws
+
+#List comprehension
+# listVar = [num * 2 for num in range(1, 11)] would print 2, 4, 6, 8, etc up to 20
+# listVar = [num for num in numbers if num > 1] for if statements
+# does operator (in this case num*2) for each part of for loop, but this isnt limited to math
+
+#switch statement
+# match caseStatement:
+#  case outputStatement:
+# case _: is the default
+
+#print(help(module)) lists all the built in modules
+# import module as mod would make it so every time you call module, you would call it by mod
+# EX: import math as ma - ma.pi for pi instead of math.pi
+# to make a new module, just make a new python file and do import fileName
+
+# scope resolution
+# local -> enclosed (function inside function) -> global (outside of func)-> built-in
+
+# if __name__ == "__main__":
+#   main()
+# this allows funcs and classes to be reused without main block of code executing
+# only is true WHEN THE CODE IS BEING RUN DIRECTLY FROM THE FILE
+
+# continue keyword skips current iteration of a loop and starts from beginning of loop
+
+#import string can allow you to use string.punctuation/digits/ascii_leters
+# to make a list of all that
+#random.shuffle(listVar) will shuffle the list
+
+# CLASSES
+# class className:
+# def __init__(self) - constructor, can add other params to it as well
+# self.varName = varName for the variables n shit
+
+# Inheritance syntax
+# class childClass(parentClass):
+# can put a comma and inherit from multiple classes
+# super() to call parent function
+# super().__init__() to call parent constructor to make that obj in the child class
+
+# static methods are made by using the decorator @staticmethod above a function
+
+# CLASS METHODS
+# def classMethod(cls): to get stuff relating to the class as a whole not just an instance
+# self for an object of class, cls for class itself
+
+# magic methods (__init__, __str__, __eq__)
+# __init__(self) - constructor
+# __str__(self) - toString()
+# __eq__(self, other) - equivalence relation
+# __lt__(self, other) - makes less than operator work
+# __gt__(self, other) - makes greater than operator work
+# __add__(self, other) - makes + work however you want
+# __contains__(self, other) - makes if thing in other work
+# __getitem__(self, key) - makes object[key] work (to like find stuff)
+
+#property decorator
+# put @property above a func in a class allows you to get getters and setters
+# to make a new getter setter add the @funcName.setter decorator
+# then use the same func name
+# funcName.deleter and funcName.getter also work (del self._varName deletes it)
+
+#decorator function
+# def decorFunc(func)
+#   def wrapper(*args, **kwargs):
+#      func(*args, **kwargs)
+#   return wrapper
+# in order to add decorator put @decorFunc above the function you want to use it with
+# put things in wrapper function to add functionality to function
+
+# exception handling
+# try: - code you wanna run
+# except errName: - catches da error
+# finally: - runs after everything
+
+# FILE STUFF
+# import os
+# MAKE SURE FILES ARE IN PROJECT FOLDER
+# os.path.exists(filePath) true or false if filepath exists
+# file creating
+# w to write, x write on a non-existing file ,a to append r to read
+#START EVERY ONE WITH THIS
+# with open(filePath, "w", newline = "") as file: - the newline one is for less spacing
+#   file.write(writingStuff) - writing stuff must be a string
+
+#if you want to do with json and put in a dictionary straight use:
+#json.dump(dictName, file) instead of the file.write
+
+#csv files (for 2d lists)
+# writer = csv.writer(file) instead of the file.write
+# for row in twoDSpace:
+# writer.writerow(row)
+
+#FILE READING
+# with opem(filePath, "r') as file:
+#   content = file.read() (for txt)
+#   content = json.load(file) (for json)
+#   content = csv.reader(file) (for csv)
+
+# import datetime
+# datetime.datetime.now() to access date and time right now
+# datetimeVar.strftime(all the formatting stuff is online but it goes here)
+
+# in order to make sounds
+# import pygame
+# pygame.mixer.init()
+# pygame.mixer.music.load(soundFile)
+# pygame.mixer.music.play()
+# while pygame.mixer.music.get_busy():
+#    time.sleep(1) - this keeps the sound playing while it's not over
+
+# multithreading - performs multiple tasks at same time
+# var1 = threading.Thread(target=funcName, args = (tuple of all args needed in the function))
+# var1.start()
+
+# put var1.join() at the end if there are multiple functions to make sure
+# that the code only continues if the code has been run
+
+# API USING IN PYTHON
+# import requests
+# apiUrl = "api url here"
+# response = requests.get(f"{apiUrl}/whatever goes after)"
+# if response.status_code == 200: - its good
+# will return an http status code (LOOK THESE UP)
+# response.json() will extract the data probably into a dict?
+# then you can access it with the things
+
+# GUI interfacing
+#import sys
+#from PyQt5.QtWidgets import QApplication, QMainWindow
+
+#class MainWindow(QMainWindow):
+#    def __init__(self):
+#        super().__init__()
+#
+#def main():
+#    app = QApplication(sys.argv)
+#    window = MainWindow()
+#    window.show()
+#    sys.exit(app.exec_())
+
+#if __name__ == "__main__":
+#$    main()
+
+# LABELS
+# label = QLabel("label", self)
+#         label.setFont(QFont("Comic Sans", 40))
+#         label.setGeometry(0, 0, 400, 100)
+#         label.setStyleSheet("color: blue;"
+#                             "background-color : red;"
+#                             "font-weight: bold;"
+#                             "font-style: italic;"
+#                             "text-decoration: underline;")
+
+#V1 OF FUCKERY
+
+#     def __init__(self, x, y, width, height, iconImg):
+#         super().__init__()
+#         self.setWindowTitle("Grizzle")
+#         self.setGeometry(x, y, width, height)
+#         self.setWindowIcon(QIcon(iconImg))
+#
+#         self.initUI()
+#
+#         label = QLabel("The Gruzz", self)
+#         label.setFont(QFont("Times New Roman", 40))
+#         label.setGeometry(0, 0, 500, 100)
+#         #text
+#         label.setStyleSheet("color: black;"
+#                             "background-color : brown;"
+#                             "font-weight: bold;"
+#                             "font-style: italic;"
+#                             "text-decoration: underline;")
+#         label.setAlignment(Qt.AlignHCenter and Qt.AlignVCenter) # H or V for horiz/vert and use and to use more than 1 flag at once
+#         label.setAlignment(Qt.AlignCenter) # center of everything
+#     #picture
+#         picLabel = QLabel(self)
+#         picLabel.setGeometry(0, 100, 500, 400)
+#         pic = QPixmap(iconImg)
+#         picLabel.setPixmap(pic)
+#         picLabel.setScaledContents(True)
+
+# SETTING CSS FOR ALL MEMBERS OF A GROUP
+# self.setStyleSheet("QPushButton{}") all the things go in the curlys
+# do QPushButton#buttonName{} to change specific ones
+
+
+# font-size, font-family, padding: topBottompx leftRightpx (space between text of button and edge, margin (space around button), text-color, background-color
+# border: borderSizepx, solid (can be dashed) (border around a button), border-radius: edgeRadpx (makes buttons rounded)
+
+# FOR HBOXES AND VBOXES
+# central_widget = QWidget()
+# self.setCentralWidget(central_widget)
+
+ #syntax for buttons/checkboxes/radiobuttons/lineedit
+ # self.buttonName = QPushButton("buttonText", self)
+ # self.button.*signalthatyougot*.connect(self.funcName)
+
+ #for radiobuttons
+ # self.button_groupName.addButton(self.radiobuttonName)
+
+#to access text in a textbox/Lineedit
+# text = self.line_edit.text()
+# self.line_edit.setPlaceholderText("placeholder text")
+
+#in order to add things to hbox/grid and stuff
+# do label = QLabel(labelText)
+# instead of label = QLabel(labelText, self)
+# self adds it to the main window
+
+# TO MAKE A CUSTOM FONT WITH A TTF FILE
+
+# font_id = QFontDatabase.add("filename")
+# font_family = QFontDatabase.applicationFontFamilies(font-id)[0]
+# my_font = QFont(font_family, 150)
