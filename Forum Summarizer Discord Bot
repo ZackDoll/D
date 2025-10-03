@@ -17,13 +17,17 @@ from discord import Intents, Client, Message
 load_dotenv()
 TOKEN: Final[str] = os.getenv("DISCORD_TOKEN")
 
+#initializing all discord information
 intents: Intents = Intents.default()
 intents.message_content = True #NOQA
-client: Client = Client(intents = intents)
+client: Client = Client(intents = intents)\
+
+#IF URL IS CHANGED TO A DIFFERENT FORUM IT WILL WORK FOR THAT FORUM
 URL = "https://hypixel.net/forums/skyblock-patch-notes.158/"
 BASE = "https://hypixel.net"
 SAVE_FILE = "last_seen.txt"
 
+# saves the last seen link on the forum to ensure no repeat posts
 global last_seen_link
 if os.path.exists(SAVE_FILE):
     with open(SAVE_FILE, "r") as f:
@@ -31,6 +35,7 @@ if os.path.exists(SAVE_FILE):
 else:
     last_seen_link = None
 
+#gets the api key from .env file
 chatgptClient = OpenAI(
     api_key = os.getenv("CHATGPT_API_KEY")
 )
@@ -76,7 +81,9 @@ async def send_message(message:Message, user_message: str, uName: str) -> None:
     except Exception as e:
         print(e)
         '''
+# new system
 
+#This is unneeded in modern code version, but it can be used to keep track of posts
 @client.event
 async def on_message(message: Message) -> None:
     if message.author == client.user:
@@ -90,6 +97,7 @@ async def on_message(message: Message) -> None:
     # doesn't exist in this version
     #await send_message(message, user_message, username)
 
+#splices longer messages into shorter ones so discord does not throw error
 async def send_long_message(user, text, limit=1800):
     # Split text into lines
     lines = text.split("\n")
@@ -102,24 +110,31 @@ async def send_long_message(user, text, limit=1800):
             await user.send(current_chunk)
             current_chunk = ""  # Reset chunk
 
-        # Add the line to the current chunk
+        # add line to current chunk
         if current_chunk:
             current_chunk += "\n" + line
         else:
             current_chunk = line
 
-    # Send any remaining text
+    # send remaining text
     if current_chunk:
         await user.send(current_chunk)
 
 
 async def send_update_message(patch_notes_text, link_to_post):
     try:
+#test users 
         user_id = 281265330846695425
         user_id2 = 491078725073633291
-
-        user = await client.fetch_user(user_id)
-        user2 = await client.fetch_user(user_id2)
+        userIdArray = []
+        userArray = []
+        userIdArray.append(user_id)
+        userIdArray.append(user_id)
+        #user array
+        for i in range(len(userIdArray)):
+            user = await client.fetch_user(user_id)
+            userArray.append(user)
+        #chatGpt instructions
         response = chatgptClient.responses.create(
             model="gpt-4-turbo",
             instructions="You are a summarizer",
@@ -134,17 +149,15 @@ async def send_update_message(patch_notes_text, link_to_post):
                 f"Be concise but complete. "
                 f"PATCH NOTES: {patch_notes_text}"
         )
-        await user.send("A new patch has been received!")
-        await user2.send("A new patch has been received!")
-        text = response.output_text
-        await send_long_message(user, text)
-        await send_long_message(user2, text)
-
-        await user.send(f"Link to post: {link_to_post}")
-        await user2.send(f"Link to post: {link_to_post}")
+        #sends message to all users
+        for user in userArray:
+            await user.send("A new patch has been received!")
+            text = response.output_text
+            await send_long_message(user, text)
+            await user.send(f"Link to post: {link_to_post}")
     except Exception as e:
         print(f"Error: {e}")
-
+#update scanner
 async def scan_for_updates():
     global last_seen_link
     while True:
@@ -152,12 +165,12 @@ async def scan_for_updates():
         response = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # Finds the first thread title (ignores stickies if needed by skipping first few)
+        # finds first element in thread while ignoring the stickies (elements that are pinned to top)
         thread_element = soup.select_one("div.structItem-title a")
         if thread_element:
             new_link = BASE + thread_element["href"]
             thread_title = thread_element.get_text(strip=True)
-
+            # if the new link is actually new
             if new_link and new_link != last_seen_link:
                 print(f"New thread detected: {thread_title}")
                 print(f"Link: {new_link}")
@@ -168,17 +181,19 @@ async def scan_for_updates():
 
                 # checks the link for stuff
                 headers = {"User-Agent": "Mozilla/5.0"}
-
+    
                 textBlob = requests.get(new_link, headers=headers)
                 soup = BeautifulSoup(textBlob.text, "html.parser")
-
+                #converts text into readable format
                 post_body = soup.find("div", class_="bbWrapper")
                 patch_notes_text = post_body.get_text(separator="\n")
 
                 await send_update_message(patch_notes_text, last_seen_link)
         print(last_seen_link)
+        #checks for an update every 5 minutes
         await asyncio.sleep(300)
 
+#bot startup
 @client.event
 async def on_ready() -> None:
     print(f"{client.user} is now running")
